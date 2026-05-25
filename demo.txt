@@ -1,3 +1,2 @@
-Hello world 
-welcome to fsd lab
-training
+product management system using html,css and javascript
+like electronic motor and digital screen
