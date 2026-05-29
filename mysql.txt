@@ -1,0 +1,305 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database karthik
+    -> ;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> use karthik
+Database changed
+mysql> CREATE TABLE Users (
+    ->     user_id INT PRIMARY KEY,
+    ->     name VARCHAR(50),
+    ->     city VARCHAR(50),
+    ->     registration_date DATE
+    -> );
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> INSERT INTO Users VALUES
+    -> (1, 'Arjun', 'Hyderabad', '2026-05-01'),
+    -> (2, 'Akhil', 'Chennai', '2026-04-15'),
+    -> (3, 'Bhavana', 'Mumbai', '2026-03-20'),
+    -> (4, 'Ananya', 'Hyderabad', '2026-05-10'),
+    -> (5, 'Charan', 'Delhi', '2026-02-18'),
+    -> (6, 'David', 'Bangalore', '2026-01-25'),
+    -> (7, 'Aisha', 'Hyderabad', '2026-05-18'),
+    -> (8, 'Farhan', 'Mumbai', '2026-04-05'),
+    -> (9, 'Gopi', 'Chennai', '2026-03-12'),
+    -> (10, 'Harsha', 'Hyderabad', '2026-05-22');
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from Users
+    -> ;
++---------+---------+-----------+-------------------+
+| user_id | name    | city      | registration_date |
++---------+---------+-----------+-------------------+
+|       1 | Arjun   | Hyderabad | 2026-05-01        |
+|       2 | Akhil   | Chennai   | 2026-04-15        |
+|       3 | Bhavana | Mumbai    | 2026-03-20        |
+|       4 | Ananya  | Hyderabad | 2026-05-10        |
+|       5 | Charan  | Delhi     | 2026-02-18        |
+|       6 | David   | Bangalore | 2026-01-25        |
+|       7 | Aisha   | Hyderabad | 2026-05-18        |
+|       8 | Farhan  | Mumbai    | 2026-04-05        |
+|       9 | Gopi    | Chennai   | 2026-03-12        |
+|      10 | Harsha  | Hyderabad | 2026-05-22        |
++---------+---------+-----------+-------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Users
+    -> WHERE registration_date >= CURDATE() - INTERVAL 30 DAY;
++---------+--------+-----------+-------------------+
+| user_id | name   | city      | registration_date |
++---------+--------+-----------+-------------------+
+|       1 | Arjun  | Hyderabad | 2026-05-01        |
+|       4 | Ananya | Hyderabad | 2026-05-10        |
+|       7 | Aisha  | Hyderabad | 2026-05-18        |
+|      10 | Harsha | Hyderabad | 2026-05-22        |
++---------+--------+-----------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Users order by registration_date;
++---------+---------+-----------+-------------------+
+| user_id | name    | city      | registration_date |
++---------+---------+-----------+-------------------+
+|       6 | David   | Bangalore | 2026-01-25        |
+|       5 | Charan  | Delhi     | 2026-02-18        |
+|       9 | Gopi    | Chennai   | 2026-03-12        |
+|       3 | Bhavana | Mumbai    | 2026-03-20        |
+|       8 | Farhan  | Mumbai    | 2026-04-05        |
+|       2 | Akhil   | Chennai   | 2026-04-15        |
+|       1 | Arjun   | Hyderabad | 2026-05-01        |
+|       4 | Ananya  | Hyderabad | 2026-05-10        |
+|       7 | Aisha   | Hyderabad | 2026-05-18        |
+|      10 | Harsha  | Hyderabad | 2026-05-22        |
++---------+---------+-----------+-------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT city, COUNT(*) AS total_users
+    -> FROM Users
+    -> GROUP BY city;
++-----------+-------------+
+| city      | total_users |
++-----------+-------------+
+| Hyderabad |           4 |
+| Chennai   |           2 |
+| Mumbai    |           2 |
+| Delhi     |           1 |
+| Bangalore |           1 |
++-----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select cities from Users where count(city)>5 group by cities;
+ERROR 1054 (42S22): Unknown column 'cities' in 'field list'
+mysql> select city from Users where count(city)>5 group by city;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select city from Users where count(city)>5 GROUP BY city;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select city from Users where  GROUP BY city having count(city)>5;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY city having count(city)>5' at line 1
+mysql> select city from Users where  GROUP BY city having count(*)>5;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY city having count(*)>5' at line 1
+mysql> select city from Users where  GROUP BY city having count(*)>5;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY city having count(*)>5' at line 1
+mysql> select city from Users where  GROUP BY city HAVING COUNT(*)>5;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY city HAVING COUNT(*)>5' at line 1
+mysql> SELECT city, COUNT(*) AS total_users
+    -> FROM Users
+    -> GROUP BY city
+    ->
+    ->
+    -> ;
++-----------+-------------+
+| city      | total_users |
++-----------+-------------+
+| Hyderabad |           4 |
+| Chennai   |           2 |
+| Mumbai    |           2 |
+| Delhi     |           1 |
+| Bangalore |           1 |
++-----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select city from Users   GROUP BY city HAVING COUNT(*)>5;
+Empty set (0.00 sec)
+
+mysql> select city from Users   GROUP BY city HAVING COUNT(*)>2;
++-----------+
+| city      |
++-----------+
+| Hyderabad |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Users where name like 'A%';
++---------+--------+-----------+-------------------+
+| user_id | name   | city      | registration_date |
++---------+--------+-----------+-------------------+
+|       1 | Arjun  | Hyderabad | 2026-05-01        |
+|       2 | Akhil  | Chennai   | 2026-04-15        |
+|       4 | Ananya | Hyderabad | 2026-05-10        |
+|       7 | Aisha  | Hyderabad | 2026-05-18        |
++---------+--------+-----------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> select city from Users group by city having count(*)>1;
++-----------+
+| city      |
++-----------+
+| Hyderabad |
+| Chennai   |
+| Mumbai    |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Users
+    -> ORDER BY registration_date ASC
+    -> LIMIT 1;
++---------+-------+-----------+-------------------+
+| user_id | name  | city      | registration_date |
++---------+-------+-----------+-------------------+
+|       6 | David | Bangalore | 2026-01-25        |
++---------+-------+-----------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(registration_date) AS month,
+    -> COUNT(*) AS total_users
+    -> FROM Users
+    -> GROUP BY MONTH(registration_date);
++-------+-------------+
+| month | total_users |
++-------+-------------+
+|     5 |           4 |
+|     4 |           2 |
+|     3 |           2 |
+|     2 |           1 |
+|     1 |           1 |
++-------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Events (
+    ->     event_id INT PRIMARY KEY,
+    ->     event_name VARCHAR(100),
+    ->     city VARCHAR(50),
+    ->     start_date DATE,
+    ->     end_date DATE,
+    ->     event_date DATE,
+    ->     status VARCHAR(20),
+    ->     organizer_id INT,
+    ->     FOREIGN KEY (organizer_id) REFERENCES Users(user_id)
+    -> );
+Query OK, 0 rows affected (0.85 sec)
+
+mysql> INSERT INTO Users VALUES
+    -> (1, 'Arjun', 'Hyderabad', '2026-05-01'),
+    -> (2, 'Akhil', 'Chennai', '2026-04-15'),
+    -> (3, 'Bhavana', 'Mumbai', '2026-03-20'),
+    -> (4, 'Ananya', 'Hyderabad', '2026-05-10'),
+    -> (5, 'Charan', 'Delhi', '2026-02-18'),
+    -> (6, 'David', 'Bangalore', '2026-01-25'),
+    -> (7, 'Aisha', 'Hyderabad', '2026-05-18'),
+    -> (8, 'Farhan', 'Mumbai', '2026-04-05'),
+    -> (9, 'Gopi', 'Chennai', '2026-03-12'),
+    -> (10, 'Harsha', 'Hyderabad', '2026-05-22');
+ERROR 1062 (23000): Duplicate entry '1' for key 'users.PRIMARY'
+mysql> INSERT INTO Events VALUES
+    -> (101, 'Tech Conference', 'Hyderabad', '2026-06-10', '2026-06-12', '2026-06-10', 'Upcoming', 1),
+    -> (102, 'Music Fest', 'Mumbai', '2026-04-01', '2026-04-03', '2026-04-01', 'Completed', 3),
+    -> (103, 'Startup Expo', 'Delhi', '2026-07-15', '2026-07-18', '2026-07-15', 'Upcoming', 5),
+    -> (104, 'AI Workshop', 'Bangalore', '2026-05-05', '2026-05-06', '2026-05-05', 'Completed', 6),
+    -> (105, 'Gaming Event', 'Chennai', '2026-06-20', '2026-06-22', '2026-06-20', 'Upcoming', 2),
+    -> (106, 'Cultural Fest', 'Hyderabad', '2026-03-01', '2026-03-04', '2026-03-01', 'Completed', 4),
+    -> (107, 'Hackathon', 'Mumbai', '2026-08-10', '2026-08-13', '2026-08-10', 'Upcoming', 8),
+    -> (108, 'Business Meet', 'Delhi', '2026-02-10', '2026-02-11', '2026-02-10', 'Completed', 5),
+    -> (109, 'Education Fair', 'Chennai', '2026-07-01', '2026-07-03', '2026-07-01', 'Upcoming', 9),
+    -> (110, 'Science Expo', 'Hyderabad', '2026-01-15', '2026-01-18', '2026-01-15', 'Completed', 10);
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from Events;
++----------+-----------------+-----------+------------+------------+------------+-----------+--------------+
+| event_id | event_name      | city      | start_date | end_date   | event_date | status    | organizer_id |
++----------+-----------------+-----------+------------+------------+------------+-----------+--------------+
+|      101 | Tech Conference | Hyderabad | 2026-06-10 | 2026-06-12 | 2026-06-10 | Upcoming  |            1 |
+|      102 | Music Fest      | Mumbai    | 2026-04-01 | 2026-04-03 | 2026-04-01 | Completed |            3 |
+|      103 | Startup Expo    | Delhi     | 2026-07-15 | 2026-07-18 | 2026-07-15 | Upcoming  |            5 |
+|      104 | AI Workshop     | Bangalore | 2026-05-05 | 2026-05-06 | 2026-05-05 | Completed |            6 |
+|      105 | Gaming Event    | Chennai   | 2026-06-20 | 2026-06-22 | 2026-06-20 | Upcoming  |            2 |
+|      106 | Cultural Fest   | Hyderabad | 2026-03-01 | 2026-03-04 | 2026-03-01 | Completed |            4 |
+|      107 | Hackathon       | Mumbai    | 2026-08-10 | 2026-08-13 | 2026-08-10 | Upcoming  |            8 |
+|      108 | Business Meet   | Delhi     | 2026-02-10 | 2026-02-11 | 2026-02-10 | Completed |            5 |
+|      109 | Education Fair  | Chennai   | 2026-07-01 | 2026-07-03 | 2026-07-01 | Upcoming  |            9 |
+|      110 | Science Expo    | Hyderabad | 2026-01-15 | 2026-01-18 | 2026-01-15 | Completed |           10 |
++----------+-----------------+-----------+------------+------------+------------+-----------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select event_name from Events where status='Upcoming';
++-----------------+
+| event_name      |
++-----------------+
+| Tech Conference |
+| Startup Expo    |
+| Gaming Event    |
+| Hackathon       |
+| Education Fair  |
++-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select city,count(event_name) as no_of_events group by city;
+ERROR 1054 (42S22): Unknown column 'city' in 'field list'
+mysql> select city,count(event_name) as no_of_events from Users group by city;
+ERROR 1054 (42S22): Unknown column 'event_name' in 'field list'
+mysql> select city,count(event_name) as no_of_events from Events group by city;
++-----------+--------------+
+| city      | no_of_events |
++-----------+--------------+
+| Hyderabad |            3 |
+| Mumbai    |            2 |
+| Delhi     |            2 |
+| Bangalore |            1 |
+| Chennai   |            2 |
++-----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select event_name from Events where days(start_date-end_date)>2;
+ERROR 1305 (42000): FUNCTION karthik.days does not exist
+mysql> select event_name from Events where day(start_date-end_date)>2;
+Empty set, 10 warnings (0.00 sec)
+
+mysql> select event_name from Events where (start_date-end_date)>2;
+Empty set (0.00 sec)
+
+mysql> select event_name,city,status from Events where status='Completed' and city='Hyderabad';
++---------------+-----------+-----------+
+| event_name    | city      | status    |
++---------------+-----------+-----------+
+| Cultural Fest | Hyderabad | Completed |
+| Science Expo  | Hyderabad | Completed |
++---------------+-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select event_name from Events where (start_date-end_date)>2;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM Events
+    -> WHERE DATEDIFF(end_date, start_date) > 2;
++----------+---------------+-----------+------------+------------+------------+-----------+--------------+
+| event_id | event_name    | city      | start_date | end_date   | event_date | status    | organizer_id |
++----------+---------------+-----------+------------+------------+------------+-----------+--------------+
+|      103 | Startup Expo  | Delhi     | 2026-07-15 | 2026-07-18 | 2026-07-15 | Upcoming  |            5 |
+|      106 | Cultural Fest | Hyderabad | 2026-03-01 | 2026-03-04 | 2026-03-01 | Completed |            4 |
+|      107 | Hackathon     | Mumbai    | 2026-08-10 | 2026-08-13 | 2026-08-10 | Upcoming  |            8 |
+|      110 | Science Expo  | Hyderabad | 2026-01-15 | 2026-01-18 | 2026-01-15 | Completed |           10 |
++----------+---------------+-----------+------------+------------+------------+-----------+--------------+
+4 rows in set (0.00 sec)
